@@ -1,0 +1,57 @@
+components:
+  schemas:
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB.
+        user:
+          type: string
+          description: ID del usuario que adopta.
+        pet:
+          type: string
+          description: ID de la mascota adoptada.
+      required:
+        - user
+        - pet
+
+paths:
+  /api/adoptions:
+    get:
+      summary: Obtiene todas las adopciones.
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: "Operación exitosa. Devuelve un arreglo de todas las adopciones."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Adoption'
+
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Crea una nueva adopción.
+      tags:
+        - Adoptions
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que va a adoptar.
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID de la mascota a ser adoptada.
+          schema:
+            type: string
+      responses:
+        "201":
+          description: "Adopción creada exitosamente."
+        "404":
+          description: "Usuario o mascota no encontrados."

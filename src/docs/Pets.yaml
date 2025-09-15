@@ -1,0 +1,118 @@
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB.
+        name:
+          type: string
+          description: Nombre de la mascota.
+        specie:
+          type: string
+          description: Especie de la mascota.
+        birthDate:
+          type: string
+          format: date-time
+          description: Fecha de nacimiento de la mascota.
+        adopted:
+          type: boolean
+          description: Indica si la mascota ha sido adoptada.
+        owner:
+          type: string
+          description: ID del dueño de la mascota.
+      required:
+        - name
+        - specie
+
+paths:
+  /api/pets:
+    get:
+      summary: Obtiene todas las mascotas.
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: "Operación exitosa. Devuelve un arreglo de todas las mascotas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+    post:
+      summary: Crea una nueva mascota.
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        "201":
+          description: "Mascota creada exitosamente."
+        "400":
+          description: "Datos de entrada inválidos."
+
+  /api/pets/{pid}:
+    get:
+      summary: Obtiene una mascota por su ID.
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID de la mascota a obtener.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Mascota encontrada."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        "404":
+          description: "Mascota no encontrada."
+    put:
+      summary: Actualiza una mascota por su ID.
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID de la mascota a actualizar.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+      responses:
+        "200":
+          description: "Mascota actualizada exitosamente."
+        "404":
+          description: "Mascota no encontrada."
+    delete:
+      summary: Elimina una mascota por su ID.
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID de la mascota a eliminar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Mascota eliminada exitosamente."
+        "404":
+          description: "Mascota no encontrada."

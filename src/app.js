@@ -25,7 +25,7 @@ const swaggerOptions = {
             description:'API para la gestión de adopción de mascotas'
         }
     },
-    apis:[`./src/routes/*.js`]
+    apis:[`./src/docs/**/*.yaml`]
 }
 
 const specs = swaggerJSDoc(swaggerOptions);

@@ -1,0 +1,106 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB.
+        first_name:
+          type: string
+          description: Nombre del usuario.
+        last_name:
+          type: string
+          description: Apellido del usuario.
+        email:
+          type: string
+          description: Email del usuario (debe ser único).
+        password:
+          type: string
+          description: Contraseña del usuario (será hasheada).
+        pets:
+          type: array
+          items:
+            type: string
+            description: IDs de las mascotas adoptadas por el usuario.
+      required:
+        - first_name
+        - last_name
+        - email
+        - password
+
+paths:
+  /api/users:
+    get:
+      summary: Obtiene todos los usuarios.
+      tags:
+        - Users
+      responses:
+        "200":
+          description: "Operación exitosa. Devuelve un arreglo de todos los usuarios."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /api/users/{uid}:
+    get:
+      summary: Obtiene un usuario por su ID.
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que se desea obtener.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Usuario encontrado."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: "Usuario no encontrado."
+    put:
+      summary: Actualiza un usuario por su ID.
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario a actualizar.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: "Usuario actualizado exitosamente."
+        "404":
+          description: "Usuario no encontrado."
+    delete:
+      summary: Elimina un usuario por su ID.
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario a eliminar.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Usuario eliminado exitosamente."
+        "404":
+          description: "Usuario no encontrado."
